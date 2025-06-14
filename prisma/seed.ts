@@ -1,0 +1,407 @@
+const { PrismaClient, Category, BankName } = require('../lib/generated/prisma');
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const cards = [
+    // Best Cards
+    {
+      category: Category.BEST,
+      bankName: BankName.SBI,
+      cardName: "Cashback SBI Credit Card",
+      description: "The SBI Cashback Credit Card is a no-nonsense cashback card offering 5% cashback on most online transactions and 1% cashback on offline purchases and bill payments. Ideal for frequent online shoppers and food delivery users.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2022/09/Cashback-SBI-Credit-Card.webp",
+      joiningFee: 999,
+      renewalFee: 999,
+      bestSuitedFor: "Shopping | Food",
+      rewardType: "Cashback",
+      welcomeBenefits: "N/A",
+      starRating: 5
+    },
+    {
+      category: Category.BEST,
+      bankName: BankName.HDFC,
+      cardName: "Swiggy HDFC Bank Credit Card",
+      description: "Popular among millennials, the Swiggy HDFC Bank Credit Card offers 10% cashback on Swiggy, Dineout, and Instamart, and 5% cashback on Amazon, Flipkart, Ola, Myntra, and H&M. Mastercard World perks included.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/06/Swiggy-HDFC-Bank-Credit-Card.webp",
+      joiningFee: 500,
+      renewalFee: 500,
+      bestSuitedFor: "Dining | Food",
+      rewardType: "Cashback",
+      welcomeBenefits: "Complimentary 3-Month Swiggy One Membership",
+      starRating: 5
+    },
+    {
+      category: Category.BEST,
+      bankName: BankName.HDFC,
+      cardName: "HDFC Bank Millennia Credit Card",
+      description: "Ideal for online-savvy youth, the HDFC Millennia Credit Card offers 5% cashback on Amazon, Flipkart, Myntra, Swiggy, Zomato, cult.fit, and more. Cashback capped at ₹1,000 per statement cycle.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/09/HDFC-Bank-Millennia-Credit-Card.webp",
+      joiningFee: 1000,
+      renewalFee: 1000,
+      bestSuitedFor: "Shopping",
+      rewardType: "Cashback",
+      welcomeBenefits: "1,000 CashPoints",
+      starRating: 5
+    },
+    {
+      category: Category.BEST,
+      bankName: BankName.ICICI,
+      cardName: "Amazon Pay ICICI Bank Credit Card",
+      description: "The Amazon Pay ICICI Credit Card offers 5% cashback for Prime members and 3% for non-Prime on Amazon, 2% with Amazon Pay partners, and 1% elsewhere. Lifetime free with welcome benefits up to ₹2,500.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/06/Amazon-Pay-ICICI-Bank-Credit-Card-1.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping",
+      rewardType: "Cashback",
+      welcomeBenefits: "Cashback and Discounts Up to ₹2,500 (Both for Prime and Non-Prime Members) and One Month EazyDiner Membership",
+      starRating: 5
+    },
+    {
+      category: Category.BEST,
+      bankName: BankName.AXIS,
+      cardName: "Flipkart Axis Bank Credit Card",
+      description: "Earn 5% cashback on Flipkart and 4% on Swiggy, PVR, cult.fit, and Uber with the Flipkart Axis Credit Card. Comes with ₹600 welcome benefits and four complimentary domestic airport lounge accesses annually.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/08/Flipkart-Axis-Bank-Credit-Card.webp",
+      joiningFee: 500,
+      renewalFee: 500,
+      bestSuitedFor: "Shopping",
+      rewardType: "Cashback",
+      welcomeBenefits: "Introductory Benefits Worth Rs. 600 on Card Issuance",
+      starRating: 5
+    },
+    // Lifetime Free Cards
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.INDUSIND,
+      cardName: "EazyDiner IndusInd Platinum Credit Card",
+      description: "The EazyDiner IndusInd Platinum Credit Card is designed specifically for food and dining. It offers up to a 25% discount on dining expenditures via EazyDiner. Cardholders receive a 3-month EazyDiner Prime membership and 500 bonus EazyPoints as a welcome benefit.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/01/EazyDiner-IndusInd-Platinum-Credit-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Food",
+      rewardType: "Reward Points",
+      welcomeBenefits: "3-Month EazyDiner Prime Membership and 500 Bonus EazyPoints",
+      starRating: 4
+    },
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.IDFC,
+      cardName: "IDFC FIRST Select Credit Card",
+      description: "The IDFC FIRST Select Credit Card is a premium offering with benefits across travel, shopping, entertainment, and more. It offers up to 10x reward points, complimentary lounge access, and lifetime free membership.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/08/IDFC-FIRST-Select-Credit-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping | Travel | Entertainment",
+      rewardType: "Reward Points",
+      welcomeBenefits: "N/A",
+      starRating: 5
+    },
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.AXIS,
+      cardName: "Axis Bank Neo Credit Card",
+      description: "The Axis Bank Neo Credit Card is a top lifetime-free option for millennials and first-time users. Benefits include discounts on Zomato, Myntra, Blinkit, and BookMyShow, and cashback on utilities. UPI linkage is available for RuPay users.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/08/Axis-Bank-Neo-Credit-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping | Food",
+      rewardType: "Reward Points",
+      welcomeBenefits: "100% Cashback Up to ₹300 on First Utility Bill Payment",
+      starRating: 4
+    },
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.INDUSIND,
+      cardName: "IndusInd Legend Credit Card",
+      description: "The IndusInd Legend Credit Card is a lifetime free card ideal for first-time applicants. It offers 1 reward point per ₹100 spent on weekdays and 2 on weekends, along with movie BOGO offers.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/07/IndusInd-Legend-Credit-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "N/A",
+      starRating: 4
+    },
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.HSBC,
+      cardName: "HSBC Visa Platinum Credit Card",
+      description: "HSBC Visa Platinum is HSBC's only lifetime free card. Ideal for new users looking for no-fee entry-level cards with discounts and offers. Earn 2 Reward Points per ₹150 spent.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/08/HSBC-Visa-Platinum-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "N/A",
+      starRating: 4
+    },
+    {
+      category: Category.LIFETIME_FREE,
+      bankName: BankName.AU,
+      cardName: "AU Bank LIT Credit Card",
+      description: "AU Bank LIT is India's first customizable credit card. It lets you select benefits from five categories (travel, OTT, shopping, cashback, etc.) every 90 days. Offers accelerated reward points, 5% cashback, and complimentary lounge access.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2022/07/AU-Bank-LIT-Credit-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Custom Benefits",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Custom Features with Base Rewards",
+      starRating: 4
+    },
+    // Travel Cards
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.AXIS,
+      cardName: "Axis Bank Atlas Credit Card",
+      description: "Travel-focused card with tiered EDGE Miles rewards, offering 5 EDGE Miles per ₹100 spent and extensive lounge access.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2022/02/Axis-Bank-Atlas-Credit-Card.webp",
+      joiningFee: 5000,
+      renewalFee: 5000,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "2,500 Edge Miles on completing 1 transaction within 30 days of card issuance",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.AMERICAN_EXPRESS,
+      cardName: "American Express Platinum Travel Credit Card",
+      description: "Premium travel card offering 10,000 Membership Rewards Points and lounge access with Priority Pass membership.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/06/American-Express-Platinum-Travel-Credit-Card.webp",
+      joiningFee: 5000,
+      renewalFee: 5000,
+      bestSuitedFor: "Travel, Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "10,000 Membership Rewards Points",
+      starRating: 5
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.SBI,
+      cardName: "SBI MILES PRIME Credit Card",
+      description: "Mid-tier travel card with Travel Credits, lounge access, travel insurance, and Priority Pass membership.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/04/SBI-Card-MILES-PRIME.webp",
+      joiningFee: 2999,
+      renewalFee: 2999,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "3,000 Travel Credits on spending ₹60,000 within 60 days",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.SBI,
+      cardName: "SBI Card Miles Elite",
+      description: "Premium SBI card with up to 6 Travel Credits per ₹200 spend, extensive lounge access and travel redemptions.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/04/SBI-Card-Miles-Elite.webp",
+      joiningFee: 4999,
+      renewalFee: 4999,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "5,000 Travel Credits on ₹1 lakh spend in first 60 days",
+      starRating: 5
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.RBL,
+      cardName: "RBL World Safari Credit Card",
+      description: "Global travel card with zero forex markup, MakeMyTrip voucher, and lounge access with Priority Pass.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/07/RBL-World-Safari-Credit-Card.webp",
+      joiningFee: 3000,
+      renewalFee: 3000,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "MakeMyTrip Voucher Worth ₹3,000",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.AXIS,
+      cardName: "Axis Bank Horizon Credit Card",
+      description: "Mid-range Axis card offering 5 EDGE Miles per ₹100 on travel spends, and extensive lounge access across India and abroad.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/06/Axis-Bank-Horizon-Credit-Card.webp",
+      joiningFee: 3000,
+      renewalFee: 3000,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "5,000 EDGE Miles on spends of ₹1,000 within 30 days",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.ICICI,
+      cardName: "MakeMyTrip ICICI Bank Credit Card",
+      description: "Co-branded card offering myCash rewards and lounge access; best suited for MakeMyTrip loyal customers.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/10/MakeMyTrip-ICICI-Bank-Credit-Card.webp",
+      joiningFee: 999,
+      renewalFee: 999,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "₹1,000 MMT Voucher and MMTBLACK Gold Tier Membership",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.AU,
+      cardName: "ixigo AU Credit Card",
+      description: "Lifetime-free travel card with zero forex charges and ixigo Money rewards on travel bookings.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2023/11/ixigo-AU-Card.webp",
+      joiningFee: 0,
+      renewalFee: 0,
+      bestSuitedFor: "Travel",
+      rewardType: "Reward Points",
+      welcomeBenefits: "1,000 RPs and ₹1,000 ixigo Money Voucher on first transaction within 30 days",
+      starRating: 4
+    },
+    {
+      category: Category.TRAVEL,
+      bankName: BankName.ICICI,
+      cardName: "Adani One ICICI Bank Platinum Credit Card",
+      description: "Domestic travel card offering Adani Reward Points and benefits across Adani airports, including valet parking and lounge access.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2024/06/Adani-One-ICICI-Bank-Platinum-Credit-Card.webp",
+      joiningFee: 750,
+      renewalFee: 750,
+      bestSuitedFor: "Travel",
+      rewardType: "Adani Reward Points",
+      welcomeBenefits: "Hotel Voucher Worth ₹1,000, Flight Voucher Worth ₹2,000 on spends of ₹10,000",
+      starRating: 4
+    },
+    // Reward Cards
+    {
+      category: Category.REWARDS,
+      bankName: BankName.SBI,
+      cardName: "SBI SimplyCLICK Credit Card",
+      description: "Entry-level SBI card ideal for online shopping with 10X rewards on select merchants and Amazon welcome voucher.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/07/SBI-SimplyCLICK-Credit-Card.webp",
+      joiningFee: 499,
+      renewalFee: 499,
+      bestSuitedFor: "Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Amazon Gift Card Worth ₹500",
+      starRating: 4
+    },
+    {
+      category: Category.REWARDS,
+      bankName: BankName.HDFC,
+      cardName: "HDFC Bank Regalia Gold Credit Card",
+      description: "Premium HDFC card focused on travel and shopping, includes welcome vouchers, lounge access, and elite memberships.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2023/03/HDFC-Bank-Regalia-Gold-Credit-Card.webp",
+      joiningFee: 2500,
+      renewalFee: 2500,
+      bestSuitedFor: "Travel, Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Voucher Worth ₹2,500 + MMT Black Elite + Club Vistara Silver",
+      starRating: 5
+    },
+    {
+      category: Category.REWARDS,
+      bankName: BankName.INDUSIND,
+      cardName: "IndusInd Bank Pinnacle World Credit Card",
+      description: "High-end card with premium welcome gifts, lounge access, and rewards on travel and shopping. Lifetime free renewal.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/07/IndusInd-Bank-Pinnacle-World-Credit-Card.webp",
+      joiningFee: 14999,
+      renewalFee: 0,
+      bestSuitedFor: "Travel, Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Choice of Luxe gift card, Oberoi stay, or retail vouchers",
+      starRating: 5
+    },
+    {
+      category: Category.REWARDS,
+      bankName: BankName.HDFC,
+      cardName: "HDFC Bank Diners Club Black Metal Edition Credit Card",
+      description: "Super-premium lifestyle card offering high rewards, memberships, lounge & golf access, and low forex markup.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2023/10/HDFC-Bank-Diners-Club-Black-Metal-Edition-Credit-Card.webp",
+      joiningFee: 10000,
+      renewalFee: 10000,
+      bestSuitedFor: "Travel, Dining, Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Club Marriott, Swiggy One, and Amazon Prime on ₹1.5L spend in 90 days",
+      starRating: 5
+    },
+    {
+      category: Category.REWARDS,
+      bankName: BankName.BOB,
+      cardName: "BOBCARD ETERNA Credit Card",
+      description: "Reward-heavy credit card with great perks in travel, fitness, and insurance. High reward rate and milestone bonuses.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/07/BOBCARD-ETERNA-Credit-Card.webp",
+      joiningFee: 2499,
+      renewalFee: 2499,
+      bestSuitedFor: "Travel, Shopping",
+      rewardType: "Reward Points",
+      welcomeBenefits: "6-month FitPass Pro + 10,000 Bonus Reward Points",
+      starRating: 5
+    },
+    // Forex Cards
+    {
+      category: Category.FOREX,
+      bankName: BankName.YES,
+      cardName: "BookMyForex YES Bank Forex Card",
+      description: "Co-branded foreign travel card supporting multiple currencies, offers seamless international transactions and discounts across categories.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2022/08/BookMyForex-YES-Bank-Forex-Card.webp",
+      joiningFee: 0,
+      renewalFee: 250,
+      bestSuitedFor: "Travel, International Spends",
+      rewardType: "Reward Points",
+      welcomeBenefits: "₹200 discount on 1st BookMyForex transaction (Promo code: NEWTOBMF)",
+      starRating: 4
+    },
+    {
+      category: Category.FOREX,
+      bankName: BankName.AXIS,
+      cardName: "Axis Bank Multi-Currency Forex Card",
+      description: "Prepaid card supporting 16 global currencies with no markup on loaded currency. Includes discounts on roaming packs and TripAssist support.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/10/Axis-Bank-Multi-Currency-Forex-Card.webp",
+      joiningFee: 300,
+      renewalFee: 0,
+      bestSuitedFor: "Shopping, International Spends",
+      rewardType: "Reward Points",
+      welcomeBenefits: "None",
+      starRating: 4
+    },
+    {
+      category: Category.FOREX,
+      bankName: BankName.HDFC,
+      cardName: "HDFC Bank Multicurrency Platinum ForexPlus Chip Card",
+      description: "Multicurrency card supporting 22 currencies with markup-free usage and additional benefits like Amazon vouchers and global concierge services.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/10/HDFC-Bank-Multicurrency-Platinum-ForexPlus-Chip-Card.webp",
+      joiningFee: 500,
+      renewalFee: 0,
+      bestSuitedFor: "Travel, International Spends",
+      rewardType: "Reward Points",
+      welcomeBenefits: "Fee waiver on 1st load of USD 1,000 or equivalent",
+      starRating: 4
+    },
+    {
+      category: Category.FOREX,
+      bankName: BankName.SBI,
+      cardName: "State Bank Multi-Currency Foreign Travel Card",
+      description: "Lowest issuance fee card supporting 7 currencies. No markup on loaded currency, 3% fee on cross-currency transactions.",
+      image: "https://cd9941cc.delivery.rocketcdn.me/wp-content/uploads/2021/10/State-Bank-Multi-Currency-Foreign-Travel-Card.webp",
+      joiningFee: 100,
+      renewalFee: 0,
+      bestSuitedFor: "Travel, International Spends",
+      rewardType: "Reward Points",
+      welcomeBenefits: "None",
+      starRating: 4
+    }
+  ];
+
+  for (const card of cards) {
+    await prisma.cards.create({
+      data: card
+    });
+  }
+
+  console.log('Seed data inserted successfully');
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  }); 

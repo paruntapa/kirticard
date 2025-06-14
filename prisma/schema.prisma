@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model cards {
+  id                String   @id @default(uuid())
+  category          Category
+  bankName          BankName
+  cardName          String
+  description       String?
+  image             String
+  joiningFee        Int 
+  renewalFee        Int
+  bestSuitedFor     String
+  rewardType        String
+  welcomeBenefits   String
+  starRating        Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Category {
+  BEST
+  REWARDS
+  CASHBACK
+  FUEL
+  LIFETIME_FREE
+  FOREX
+  RUPAY
+  INTERNATIONAL_TRAVEL
+  DOMESTIC_LOUNGE
+  INTERNATIONAL_LOUNGE
+  FINTECH
+}
+
+enum BankName {
+  HDFC
+  ICICI
+  SBI
+  AXIS
+  PNB
+  IDFC
+  AMERICAN_EXPRESS
+  INDUSIND
+  AU
+  HSBC
+  STANDARD_CHARTERED_BANK
+  BOB
+  CITI
+  KOTAK
+  FEDERAL_BANK
+  CANARA_BANK
+  PUNJAB_NATIONAL_BANK
+  IDBI
+  YES
+}
+
+

@@ -1,0 +1,9 @@
+This is HDFC Regalia Credit Card, from HDFC Bank, with category TRAVEL which has a description like this Premium travel credit card with exclusive benefits. It has joiningfee 2500, renewalfee 2500, and is bestsuited for frequent travelers. also it has welcome benefits Complimentary airport lounge access and travel insurance, and a starrating of 4.5 with reward type REWARDS_POINTS
+
+This is SBI Elite Credit Card, from SBI Card, with category REWARDS which has a description like this High-end credit card with premium rewards. It has joiningfee 4999, renewalfee 4999, and is bestsuited for high spenders. also it has welcome benefits 50,000 reward points and concierge service, and a starrating of 4.3 with reward type REWARDS_POINTS
+
+This is ICICI Amazon Pay Credit Card, from ICICI Bank, with category CASHBACK which has a description like this Cashback credit card for Amazon purchases. It has joiningfee 0, renewalfee 0, and is bestsuited for online shoppers. also it has welcome benefits 5% cashback on Amazon purchases, and a starrating of 4.7 with reward type CASHBACK
+
+This is Axis Magnus Credit Card, from Axis Bank, with category TRAVEL which has a description like this Premium travel and lifestyle credit card. It has joiningfee 10000, renewalfee 10000, and is bestsuited for luxury travelers. also it has welcome benefits Airport lounge access and travel insurance, and a starrating of 4.6 with reward type REWARDS_POINTS
+
+This is Amex Platinum Credit Card, from American Express, with category LIFETIME_FREE which has a description like this Elite credit card with premium benefits. It has joiningfee 60000, renewalfee 60000, and is bestsuited for high-net-worth individuals. also it has welcome benefits Airport lounge access and concierge service, and a starrating of 4.8 with reward type REWARDS_POINTS 

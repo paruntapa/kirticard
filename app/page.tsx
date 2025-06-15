@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import axios from 'axios';
 import CategoryCardCarousel from '@/components/CategoryCardCarousel';
 import BankCardCarousel from '@/components/BankCardCarousel';
 import { Cards } from '@/types';
@@ -47,9 +46,9 @@ export default function Home() {
     const fetchCategoryCards = async () => {
       if (selectedCategory) {
         try {
-          const response = await axios.get(`/api/cards?category=${selectedCategory}`);
+          const response = await fetch(`/api/cards?category=${selectedCategory}`);
           if (response.status !== 200) throw new Error('Failed to fetch cards');
-          const data = response.data;
+          const data = await response.json();
           setCategoryFilteredCards(data);
           setCategoryCardIndex(0);
         } catch (error) {
@@ -68,9 +67,9 @@ export default function Home() {
     const fetchBankCards = async () => {
       if (selectedBank) {
         try {
-          const response = await axios.get(`/api/cards?bank=${selectedBank}`);
+          const response = await fetch(`/api/cards?bank=${selectedBank}`);
           if (response.status !== 200) throw new Error('Failed to fetch cards');
-          const data = response.data;
+          const data = await response.json();
           setBankFilteredCards(data);
           setBankCardIndex(0);
         } catch (error) {

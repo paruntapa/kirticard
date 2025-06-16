@@ -4,6 +4,7 @@ import { Sparkles, Send } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import AiChat from '@/components/AiChat';
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const Hero = () => {
   return (
@@ -21,8 +22,8 @@ const Hero = () => {
                 </span>{' '}
                 Match
               </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                Discover the best credit cards tailored to your lifestyle. Compare rewards, benefits, and offers from top banks.
+              <p>
+              <TextGenerateEffect className="text-xl text-gray-300 leading-relaxed" words="Discover the best credit cards tailored to your lifestyle. Compare rewards, benefits, and offers from top banks." />
               </p>
             </div>
             {/* Glowing Credit Card */}

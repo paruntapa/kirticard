@@ -61,6 +61,7 @@ enum BankName {
   AU
   HSBC
   STANDARD_CHARTERED_BANK
+  SC_BANK
   BOB
   CITI
   KOTAK

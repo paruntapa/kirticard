@@ -29,7 +29,7 @@ const categories = [
 const banks = [
   'HDFC', 'SBI', 'IDFC', 'BOB', 'AXIS', 'AU',
   'RBL', 'KOTAK', 'ICICI', 'IDBI', 'HSBC', 'YES',
-  'AMEX', 'INDUSIND', 'STANDARD_CHARTERED_BANK', 'FEDERAL'
+  'AMEX', 'INDUSIND', 'SC_BANK', 'FEDERAL'
 ];
 
 export default function Home() {
@@ -89,7 +89,6 @@ export default function Home() {
       setSelectedCategory('');
     } else {
       setSelectedCategory(categoryId);
-      setSelectedBank('');
     }
   };
 
@@ -98,7 +97,6 @@ export default function Home() {
       setSelectedBank('');
     } else {
       setSelectedBank(bankName);
-      setSelectedCategory('');
     }
   };
 
@@ -202,7 +200,7 @@ export default function Home() {
             </div>
 
             {/* Bank Cards Carousel */}
-            {selectedBank && bankFilteredCards.length > 0 && (
+            { bankFilteredCards.length > 0 && (
               <BankCardCarousel
                 cards={bankFilteredCards}
                 title={`${selectedBank} Credit Cards`}

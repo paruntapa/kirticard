@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Sparkles, Send } from 'lucide-react'
+import { ContainerTextFlip } from "@/components/ui/container-text-flip";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 interface ChatMessage {
   type: 'user' | 'bot';
@@ -168,7 +170,7 @@ const AiChat = () => {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
-                <CardTitle className="text-white text-lg">CardGuru AI Assistant</CardTitle>
+                <CardTitle className="text-white text-lg">CardGuru AI <ContainerTextFlip className='text-white text-lg' words={["Assistant", "Kirti", "Sevak"]} /></CardTitle>
                 <p className="text-sm text-gray-300">Ask me anything about credit cards</p>
               </div>
             </div>
@@ -199,7 +201,7 @@ const AiChat = () => {
               />
               <Button 
                 onClick={handleSendMessage}
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white"
+                className="bg-gradient-to-r px-1   from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white"
                 disabled={isLoading}
               >
                 <Send className="w-4 h-4" />

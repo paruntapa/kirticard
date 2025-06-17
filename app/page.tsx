@@ -85,8 +85,6 @@ export default function Home() {
   }, [selectedBank]);
 
   const handleCategoryClick = (categoryId: string) => {
-    if (selectedCategory === categoryId) {
-      setSelectedCategory('');
     } else {
       setSelectedCategory(categoryId);
     }

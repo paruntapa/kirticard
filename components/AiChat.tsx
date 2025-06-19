@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Sparkles, Send } from 'lucide-react'
 import { ContainerTextFlip } from "@/components/ui/container-text-flip";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 interface ChatMessage {
   type: 'user' | 'bot';
@@ -188,7 +187,23 @@ const AiChat = () => {
                   {renderMessage(chat)}
                 </div>
               ))}
-              {/* <div ref={chatEndRef} /> */}
+              
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="max-w-[80%] p-3 rounded-lg bg-white/20">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                      <span className="text-gray-300 text-sm">CardGuru is thinking...</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div ref={chatEndRef} />
             </div>
             <div className="flex gap-2">
               <Input

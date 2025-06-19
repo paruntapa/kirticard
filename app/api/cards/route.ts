@@ -15,14 +15,14 @@ async function ensureConnection() {
 
 export async function GET(request: Request) {
   try {
-    // Ensure database connection
-    const isConnected = await ensureConnection();
-    if (!isConnected) {
-      return NextResponse.json(
-        { error: 'Database connection failed' },
-        { status: 500 }
-      );
-    }
+    // // Ensure database connection
+    // const isConnected = await ensureConnection();
+    // if (!isConnected) {
+    //   return NextResponse.json(
+    //     { error: 'Database connection failed' },
+    //     { status: 500 }
+    //   );
+    // }
 
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -49,8 +49,5 @@ export async function GET(request: Request) {
       { error: 'Failed to fetch cards' },
       { status: 500 }
     );
-  } finally {
-    // Always disconnect after the operation
-    await prisma.$disconnect();
-  }
+  } 
 } 

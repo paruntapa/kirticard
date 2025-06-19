@@ -144,18 +144,32 @@ export default function Home() {
                 return (
                   <Card
                     key={category.id}
-                    className={`group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-0 overflow-hidden ${
-                      selectedCategory === category.id ? `ring-2 ring-purple-500 shadow-xl` : ''
-                    }`}
+                    className={`group cursor-pointer transition-all duration-500 hover:scale-110 border-0 overflow-hidden backdrop-blur-sm
+                      shadow-lg hover:shadow-2xl
+                      ${selectedCategory === category.id 
+                        ? `ring-2 ring-purple-400 shadow-purple-500/50 shadow-2xl scale-105` 
+                        : 'hover:shadow-purple-500/30'
+                      }`}
+                    style={{
+                      boxShadow: selectedCategory === category.id 
+                        ? '0 0 30px rgba(168, 85, 247, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3)' 
+                        : '0 10px 30px rgba(0, 0, 0, 0.2)'
+                    }}
                     onClick={() => handleCategoryClick(category.id)}
                   >
-                    <div className={`bg-gradient-to-br ${category.color} p-6 text-white`}>
-                      <div className="flex flex-col items-center text-center space-y-3">
-                        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                          <IconComponent className="w-6 h-6" />
+                    <div className={`bg-gradient-to-br ${category.color} p-6 text-white relative overflow-hidden`}>
+                      {/* Glowing overlay */}
+                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      
+                      <div className="flex flex-col items-center text-center space-y-3 relative z-10">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/40 group-hover:shadow-lg transition-all duration-300 group-hover:scale-110">
+                          <IconComponent className="w-6 h-6 drop-shadow-sm" />
                         </div>
-                        <h3 className="font-semibold text-sm">{category.name}</h3>
+                        <h3 className="font-semibold text-sm drop-shadow-sm">{category.name}</h3>
                       </div>
+                      
+                      {/* Animated glow effect */}
+                      <div className="absolute -inset-1 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
                     </div>
                   </Card>
                 );
@@ -184,16 +198,30 @@ export default function Home() {
               {banks.map((bank, index) => (
                 <Card 
                   key={index} 
-                  className={`group cursor-pointer transition-all hover:scale-105 hover:shadow-lg border border-gray-200 ${
-                    selectedBank === bank ? 'ring-2 ring-purple-500 shadow-lg' : ''
-                  }`}
+                  className={`group cursor-pointer transition-all duration-500 hover:scale-110 border-0 backdrop-blur-sm bg-white/70 hover:bg-white/80
+                    shadow-lg hover:shadow-2xl relative overflow-hidden
+                    ${selectedBank === bank 
+                      ? 'ring-2 ring-purple-400 shadow-purple-500/50 shadow-2xl scale-105 bg-white/90' 
+                      : 'hover:shadow-purple-500/20'
+                    }`}
+                  style={{
+                    boxShadow: selectedBank === bank 
+                      ? '0 0 25px rgba(168, 85, 247, 0.3), 0 15px 35px rgba(0, 0, 0, 0.2)' 
+                      : '0 8px 25px rgba(0, 0, 0, 0.1)'
+                  }}
                   onClick={() => handleBankClick(bank)}
                 >
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center group-hover:from-purple-200 group-hover:to-blue-200 transition-colors">
-                      <CreditCard className="w-6 h-6 text-purple-600" />
+                  <CardContent className="p-6 text-center relative z-10">
+                    {/* Glowing background overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 backdrop-blur-sm rounded-full mx-auto mb-3 flex items-center justify-center group-hover:from-purple-200 group-hover:to-blue-200 group-hover:shadow-lg transition-all duration-300 group-hover:scale-110 relative z-10">
+                      <CreditCard className="w-6 h-6 text-purple-600 drop-shadow-sm" />
                     </div>
-                    <h3 className="font-semibold text-sm text-gray-800 whitespace-nowrap">{bank}</h3>
+                    <h3 className="font-semibold text-sm text-gray-800 whitespace-nowrap drop-shadow-sm relative z-10">{bank}</h3>
+                    
+                    {/* Subtle glow effect */}
+                    <div className="absolute -inset-1 bg-gradient-to-br from-purple-100/30 to-blue-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-lg"></div>
                   </CardContent>
                 </Card>
               ))}
@@ -292,6 +320,72 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-t border-white/10">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Brand Section */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
+                  <CreditCard className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">KirtiCard</h3>
+              </div>
+              <p className="text-gray-300 text-sm mb-4 max-w-md">
+                Your trusted AI-powered credit card comparison platform. Find the perfect card tailored to your financial needs with expert recommendations.
+              </p>
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                  <Globe className="w-4 h-4 text-gray-300" />
+                </div>
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                  <Sparkles className="w-4 h-4 text-gray-300" />
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Best Cards</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Travel Cards</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Cashback Cards</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Compare Cards</a></li>
+              </ul>
+            </div>
+
+            {/* Support */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-white/10 mt-8 pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-gray-400 text-sm">
+                © 2024 KirtiCard. All rights reserved. Made with ❤️ for smart financial decisions.
+              </p>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-gray-400">Powered by</span>
+                <div className="flex items-center gap-1 text-purple-400">
+                  <Sparkles className="w-4 h-4" />
+                  <span className="font-semibold">AI Technology</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

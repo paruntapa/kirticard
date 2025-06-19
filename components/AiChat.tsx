@@ -23,11 +23,25 @@ const AiChat = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  // Function to clean response text by removing markdown code block markers
+  const cleanResponseText = (text: string): string => {
+    return text
+      .replace(/^```html\s*/i, '') // Remove ```html from the beginning
+      .replace(/\s*```\s*$/i, '')   // Remove ``` from the end
+      .trim();
+  };
+
   // Scroll to bottom only when new messages are added
   useEffect(() => {
-    if (chatHistory.length > 0) {
+    if (chatHistory.length > 0 && chatContainerRef.current) {
       const timeoutId = setTimeout(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const container = chatContainerRef.current;
+        if (container) {
+          container.scrollTo({
+            top: container.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
       }, 100);
       return () => clearTimeout(timeoutId);
     }
@@ -84,14 +98,15 @@ const AiChat = () => {
                     const newHistory = [...prev];
                     const lastMessage = newHistory[newHistory.length - 1];
                     if (lastMessage.type === 'bot') {
-                      lastMessage.message = accumulatedText;
+                      const cleanedText = cleanResponseText(accumulatedText);
+                      lastMessage.message = cleanedText;
                       // Check if the response contains HTML-like tags
-                      lastMessage.isHtml = accumulatedText.includes('<div>') || 
-                                          accumulatedText.includes('<h1>') || 
-                                          accumulatedText.includes('<h2>') ||
-                                          accumulatedText.includes('<p>') ||
-                                          accumulatedText.includes('<ul>') ||
-                                          accumulatedText.includes('<li>');
+                      lastMessage.isHtml = cleanedText.includes('<div>') || 
+                                          cleanedText.includes('<h1>') || 
+                                          cleanedText.includes('<h2>') ||
+                                          cleanedText.includes('<p>') ||
+                                          cleanedText.includes('<ul>') ||
+                                          cleanedText.includes('<li>');
                     }
                     return newHistory;
                   });
@@ -110,13 +125,14 @@ const AiChat = () => {
         const newHistory = [...prev];
         const lastMessage = newHistory[newHistory.length - 1];
         if (lastMessage.type === 'bot') {
-          lastMessage.message = accumulatedText;
-          lastMessage.isHtml = accumulatedText.includes('<div>') || 
-                              accumulatedText.includes('<h1>') || 
-                              accumulatedText.includes('<h2>') ||
-                              accumulatedText.includes('<p>') ||
-                              accumulatedText.includes('<ul>') ||
-                              accumulatedText.includes('<li>');
+          const cleanedText = cleanResponseText(accumulatedText);
+          lastMessage.message = cleanedText;
+          lastMessage.isHtml = cleanedText.includes('<div>') || 
+                              cleanedText.includes('<h1>') || 
+                              cleanedText.includes('<h2>') ||
+                              cleanedText.includes('<p>') ||
+                              cleanedText.includes('<ul>') ||
+                              cleanedText.includes('<li>');
         }
         return newHistory;
       });
@@ -162,7 +178,7 @@ const AiChat = () => {
   return (
     <div className="relative flex justify-center">
       <div className="relative">
-        <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl">
+        <Card className="bg-white/10 backdrop-blur-lg border-white/20 py-6 shadow-2xl">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">

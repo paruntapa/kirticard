@@ -62,7 +62,7 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
           </div>
         </div>
   
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden ">
           <div 
             className="flex transition-transform duration-300 ease-in-out gap-8"
             style={{ transform: `translateX(-${currentIndex * 33.333}%)` }}

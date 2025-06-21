@@ -193,12 +193,12 @@ const AiChat = () => {
           <CardContent className="space-y-4">
             <div 
               ref={chatContainerRef}
-              className="max-h-[400px] overflow-y-auto space-y-3 scroll-smooth"
+              className="max-h-[400px] overflow-y-auto overflow-x-auto space-y-3 scroll-smooth"
             >
               {chatHistory.map((chat, index) => (
                 <div
                   key={index}
-                  className={`flex ${chat.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex overflow-x-auto ${chat.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {renderMessage(chat)}
                 </div>

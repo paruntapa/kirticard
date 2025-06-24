@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -27,6 +27,13 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
     onPrev: () => void;
   }) => {
     const visibleCards = cards.slice(0, 5);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartX, setDragStartX] = useState(0);
+    const [dragOffset, setDragOffset] = useState(0);
+    const [dragVelocity, setDragVelocity] = useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const lastDragTime = useRef(Date.now());
+    const lastDragX = useRef(0);
   
     if (visibleCards.length === 0) {
       return (
@@ -35,6 +42,106 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
         </div>
       );
     }
+
+    const handleDragStart = (clientX: number) => {
+      setIsDragging(true);
+      setDragStartX(clientX);
+      setDragOffset(0);
+      lastDragTime.current = Date.now();
+      lastDragX.current = clientX;
+      document.body.style.userSelect = 'none';
+    };
+
+    const handleDragMove = (clientX: number) => {
+      if (!isDragging) return;
+      
+      const diff = clientX - dragStartX;
+      setDragOffset(diff);
+      
+      // Calculate velocity for momentum
+      const now = Date.now();
+      const timeDiff = now - lastDragTime.current;
+      if (timeDiff > 0) {
+        const velocity = (clientX - lastDragX.current) / timeDiff;
+        setDragVelocity(velocity);
+      }
+      lastDragTime.current = now;
+      lastDragX.current = clientX;
+    };
+
+    const handleDragEnd = () => {
+      if (!isDragging) return;
+      
+      setIsDragging(false);
+      document.body.style.userSelect = '';
+      
+      const threshold = 100; // Minimum drag distance to trigger navigation
+      const velocityThreshold = 0.5; // Minimum velocity for momentum
+      
+      if (Math.abs(dragOffset) > threshold || Math.abs(dragVelocity) > velocityThreshold) {
+        if (dragOffset > 0 || dragVelocity > velocityThreshold) {
+          onPrev();
+        } else if (dragOffset < 0 || dragVelocity < -velocityThreshold) {
+          onNext();
+        }
+      }
+      
+      setDragOffset(0);
+      setDragVelocity(0);
+    };
+
+    // Mouse events
+    const handleMouseDown = (e: React.MouseEvent) => {
+      e.preventDefault();
+      handleDragStart(e.clientX);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+      handleDragMove(e.clientX);
+    };
+
+    const handleMouseUp = () => {
+      handleDragEnd();
+    };
+
+    // Touch events
+    const handleTouchStart = (e: React.TouchEvent) => {
+      handleDragStart(e.touches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+      e.preventDefault();
+      handleDragMove(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+      handleDragEnd();
+    };
+
+    // Global mouse move and up handlers
+    useEffect(() => {
+      if (!isDragging) return;
+
+      const handleGlobalMouseMove = (e: MouseEvent) => {
+        handleDragMove(e.clientX);
+      };
+
+      const handleGlobalMouseUp = () => {
+        handleDragEnd();
+      };
+
+      document.addEventListener('mousemove', handleGlobalMouseMove);
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+
+      return () => {
+        document.removeEventListener('mousemove', handleGlobalMouseMove);
+        document.removeEventListener('mouseup', handleGlobalMouseUp);
+      };
+    }, [isDragging, dragStartX]);
+
+    const baseTransform = -currentIndex * 33.333;
+    const dragTransform = isDragging ? (dragOffset / (containerRef.current?.offsetWidth || 1)) * 100 : 0;
+    const totalTransform = baseTransform + dragTransform;
   
     return (
       <div className="space-y-8">
@@ -62,10 +169,17 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
           </div>
         </div>
   
-        <div className="relative overflow-hidden ">
+        <div className="relative overflow-hidden" ref={containerRef}>
           <div 
-            className="flex transition-transform duration-300 ease-in-out gap-8"
-            style={{ transform: `translateX(-${currentIndex * 33.333}%)` }}
+            className={`flex gap-8 ${isDragging ? '' : 'transition-transform duration-300 ease-in-out'}`}
+            style={{ 
+              transform: `translateX(${totalTransform}%)`,
+              cursor: isDragging ? 'grabbing' : 'grab'
+            }}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {visibleCards.map((card) => (
               <div key={card.id} className="flex-none w-full md:w-1/2 lg:w-1/3">
@@ -80,11 +194,12 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
                         </div>
                         <Badge className="bg-white/20 text-white">Premium</Badge>
                       </div>
-                      <div className="w-full h-24 hover:scale-105 transition-all  rounded-lg mb-4 flex items-center justify-center">
+                      <div className="w-full h-24 hover:scale-105 transition-all rounded-lg mb-4 flex items-center justify-center">
                         <img 
                           src={card.image} 
                           alt={card.cardName}
                           className="w-full h-full object-contain"
+                          draggable={false}
                         />
                       </div>
                     </div>
@@ -115,7 +230,10 @@ const bankCardCarousel = ({ cards, title, currentIndex, onNext, onPrev }: {
                       <p className="text-sm text-gray-700">{card.welcomeBenefits}</p>
                     </div>
                     
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white mt-auto">
+                    <Button 
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white mt-auto"
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
                       Apply Now
                     </Button>
                   </CardContent>

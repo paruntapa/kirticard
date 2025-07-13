@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
+import prisma from '../../../lib/prisma';
 // Function to ensure database connection
 // async function ensureConnection() {
 //   try {
@@ -12,9 +12,6 @@ const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
 // }
 
 export async function GET(request: Request) {
-  // Create a new Prisma instance for each request (serverless best practice)
-  const prisma = new Prisma();
-  
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -41,7 +38,5 @@ export async function GET(request: Request) {
       { error: 'Failed to fetch cards' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 } 

@@ -1,16 +1,12 @@
-const { PrismaClient } = require('../lib/generated/prisma');
-
-const prisma = new PrismaClient();
+const prisma = require('../lib/prisma').default;
 
 async function keepDbActive() {
   try {
     // Simple query to keep the database active
-    await prisma.$queryRaw`SELECT 1`;
-    console.log('✅ Database ping successful -', new Date().toISOString());
+    const count = await prisma.cards.count();
+    console.log('✅ Database ping successful -', new Date().toISOString(), `(${count} cards)`);
   } catch (error) {
     console.error('❌ Database ping failed:', error.message);
-  } finally {
-    await prisma.$disconnect();
   }
 }
 

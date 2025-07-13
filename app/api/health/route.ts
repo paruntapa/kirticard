@@ -1,18 +1,16 @@
 import { NextResponse } from 'next/server';
-const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
+import prisma from '../../../lib/prisma';
 
 export async function GET() {
-  // Create a new Prisma instance for each request (serverless best practice)
-  const prisma = new Prisma();
-  
   try {
-    // Simple database ping to keep connection alive
-    await prisma.$queryRaw`SELECT 1`;
+    // Simple database ping to keep connection alive - just count records
+    const count = await prisma.cards.count();
     
     return NextResponse.json({ 
       status: 'healthy', 
       timestamp: new Date().toISOString(),
-      database: 'connected'
+      database: 'connected',
+      cardCount: count
     });
   } catch (error) {
     console.error('Health check failed:', error);
@@ -25,7 +23,5 @@ export async function GET() {
       },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 } 

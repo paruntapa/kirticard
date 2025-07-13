@@ -37,12 +37,12 @@ export async function POST(request: Request) {
     // Construct the full prompt
     const fullPrompt = `${context}
 
-AVAILABLE CREDIT CARDS:
-${creditCards}
+    AVAILABLE CREDIT CARDS:
+    ${creditCards}
 
-USER QUESTION: ${message}
+    USER QUESTION: ${message}
 
-Please provide a helpful response about credit cards based on the available data. Format your response in HTML as instructed.`;
+    Please provide a helpful response about credit cards based on the available data. Format your response in HTML as instructed.`;
 
     // Get the model with proper configuration
     const model = genAI.getGenerativeModel({ 

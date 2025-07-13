@@ -3,15 +3,15 @@ const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
 
 const prisma = new Prisma();
 // Function to ensure database connection
-async function ensureConnection() {
-  try {
-    await prisma.$connect();
-    return true;
-  } catch (error) {
-    console.error('Failed to connect to database:', error);
-    return false;
-  }
-}
+// async function ensureConnection() {
+//   try {
+//     await prisma.$connect();
+//     return true;
+//   } catch (error) {
+//     console.error('Failed to connect to database:', error);
+//     return false;
+//   }
+// }
 
 export async function GET(request: Request) {
   try {

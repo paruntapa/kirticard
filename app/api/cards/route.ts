@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
-
-const prisma = new Prisma();
 // Function to ensure database connection
 // async function ensureConnection() {
 //   try {
@@ -14,16 +12,10 @@ const prisma = new Prisma();
 // }
 
 export async function GET(request: Request) {
+  // Create a new Prisma instance for each request (serverless best practice)
+  const prisma = new Prisma();
+  
   try {
-    // // Ensure database connection
-    // const isConnected = await ensureConnection();
-    // if (!isConnected) {
-    //   return NextResponse.json(
-    //     { error: 'Database connection failed' },
-    //     { status: 500 }
-    //   );
-    // }
-
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const bank = searchParams.get('bank');
@@ -49,5 +41,7 @@ export async function GET(request: Request) {
       { error: 'Failed to fetch cards' },
       { status: 500 }
     );
-  } 
+  } finally {
+    await prisma.$disconnect();
+  }
 } 

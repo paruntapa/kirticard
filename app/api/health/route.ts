@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 const { PrismaClient: Prisma } = require('../../../lib/generated/prisma');
 
-const prisma = new Prisma();
-
 export async function GET() {
+  // Create a new Prisma instance for each request (serverless best practice)
+  const prisma = new Prisma();
+  
   try {
     // Simple database ping to keep connection alive
     await prisma.$queryRaw`SELECT 1`;

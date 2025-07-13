@@ -1,0 +1,16 @@
+name: Keep Database Alive
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  ping-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: |
+          curl -f https://your-kirticard-app.vercel.app/api/health || echo "Health check failed"
+          
+      - name: Log result
+        run: echo "Database ping completed at $(date)"

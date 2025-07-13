@@ -251,7 +251,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700 text-white overflow-hidden">
-              <div className="grid md:grid-cols-2 h-full">
+              <div className="grid lg:grid-cols-2 h-full">
                 <div className="p-8 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-4">
@@ -285,7 +285,7 @@ export default function Home() {
             </Card>
 
             <Card className="bg-gradient-to-br from-blue-800 to-purple-900 border-blue-700 text-white overflow-hidden">
-              <div className="grid md:grid-cols-2 h-full">
+              <div className="grid  h-full">
                 <div className="p-8 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-4">

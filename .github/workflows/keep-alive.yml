@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Ping health endpoint
         run: |
-          curl -f https://your-kirticard-app.vercel.app/api/health || echo "Health check failed"
+          curl -f https://kirticard.telzac.site/api/health || echo "Health check failed"
           
       - name: Log result
         run: echo "Database ping completed at $(date)"

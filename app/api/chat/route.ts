@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { CONTEXT_PATH, CREDIT_CARDS } from '@/lib/context';
 
 // Initialize the API
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
@@ -8,8 +9,8 @@ const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '
 const getPromptData = () => {
   try {
 
-    const context = process.env.CONTEXT_PATH || '';
-    const creditCards = process.env.CREDIT_CARDS || '';
+    const context = CONTEXT_PATH || '';
+    const creditCards = CREDIT_CARDS || '';
     
     return { context, creditCards };
   } catch (error) {
